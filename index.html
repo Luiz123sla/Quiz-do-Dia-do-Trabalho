@@ -20,24 +20,33 @@
       justify-content: center;
       min-height: 100vh;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     h1 {
-      margin-bottom: 20px;
-      font-size: 2.2rem;
+      margin-top: 20px;
       color: #00BFFF;
+      font-weight: 700;
+      font-size: 2.2rem;
+      text-align: center;
       text-shadow: 1px 1px 3px black;
     }
 
     .container {
       background: #222;
       padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      border-radius: 16px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
       width: 90%;
       max-width: 450px;
       text-align: center;
       margin-bottom: 20px;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95);}
+      to { opacity: 1; transform: scale(1);}
     }
 
     input[type="text"] {
@@ -61,7 +70,7 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -87,12 +96,14 @@
       margin-top: 20px;
       font-size: 1rem;
       color: #ff4d4d;
+      font-weight: bold;
     }
 
     .feedback {
       margin-top: 30px;
       font-size: 1.5rem;
       font-weight: bold;
+      animation: fadeIn 1s ease;
     }
   </style>
 </head>
@@ -114,15 +125,21 @@
 
   <script>
     const perguntas = [
+      { pergunta: "Em que data é comemorado o Dia do Trabalhador no Brasil?", opcoes: ["7 de setembro", "1º de maio", "15 de novembro", "4 de outubro"], correta: 1 },
+      { pergunta: "Qual foi a principal reivindicação da greve de Chicago em 1886?", opcoes: ["Fim do trabalho aos domingos", "Aumento do salário mínimo", "Redução da jornada para 8 horas", "Criação de férias remuneradas"], correta: 2 },
       { pergunta: "Em que país aconteceu a greve que deu origem ao Dia do Trabalhador?", opcoes: ["França", "Estados Unidos", "Inglaterra", "Brasil"], correta: 1 },
       { pergunta: "Qual cidade foi o palco central da greve de 1886?", opcoes: ["Nova York", "Chicago", "Boston", "Washington"], correta: 1 },
-      { pergunta: "Em que ano a jornada de 8 horas foi adotada oficialmente na França?", opcoes: ["1886", "1919", "1924", "1945"], correta: 1 },
-      { pergunta: "Qual prática é considerada trabalho escravo contemporâneo?", opcoes: ["Pagamento abaixo do mínimo", "Jornada de 8h sem registro", "Trabalho temporário sem contrato", "Atraso eventual no salário"], correta: 0 },
-      { pergunta: "Quando o Brasil transformou o 1º de maio em feriado?", opcoes: ["1924", "1930", "1988", "2002"], correta: 0 },
-      { pergunta: "Qual é o principal motivo da comemoração do Dia do Trabalho?", opcoes: ["Lei Áurea", "Revolução Industrial", "Homenagem à luta dos trabalhadores", "Fundação da ONU"], correta: 2 },
-      { pergunta: "O Dia do Trabalho começou a ser comemorado no Brasil em qual década?", opcoes: ["1890", "1900", "1910", "1920"], correta: 2 },
-      { pergunta: "Qual destes direitos NÃO fazia parte das primeiras reivindicações?", opcoes: ["Jornada de 8h", "Condições dignas", "Direito à aposentadoria", "Valorização salarial"], correta: 2 },
-      { pergunta: "Qual destes é um objetivo atual do Dia do Trabalho?", opcoes: ["Conquistas empresariais", "Reduzir impostos", "Valorizar o trabalhador", "Incentivar comércio exterior"], correta: 2 },
+      { pergunta: "Em que ano o Brasil transformou o 1º de maio em feriado oficialmente por decreto?", opcoes: ["1924", "1930", "1988", "2002"], correta: 0 },
+      { pergunta: "Qual presidente brasileiro oficializou o feriado do Dia do Trabalhador?", opcoes: ["Getúlio Vargas", "Artur Bernardes", "Juscelino Kubitschek", "João Goulart"], correta: 1 },
+      { pergunta: "Qual desses direitos NÃO fazia parte das reivindicações iniciais do movimento operário?", opcoes: ["Jornada de 8 horas", "Condições dignas de trabalho", "Direito à aposentadoria", "Valorização dos salários"], correta: 2 },
+      { pergunta: "Em que ano o 1º de maio foi oficialmente incluído como feriado nacional por lei no Brasil?", opcoes: ["1988", "1943", "2002", "1977"], correta: 2 },
+      { pergunta: "Qual é o principal motivo da comemoração do Dia do Trabalhador em 1º de maio?", opcoes: ["É o dia em que foi assinada a Lei Áurea", "Marca o início da Revolução Industrial", "Homenageia uma greve histórica por melhores condições de trabalho", "Comemora a fundação da ONU"], correta: 2 },
+      { pergunta: "Qual país reduziu pela primeira vez a jornada de trabalho para 8 horas após a greve de 1886?", opcoes: ["Brasil", "Estados Unidos", "França", "Inglaterra"], correta: 2 },
+      { pergunta: "Qual era a jornada comum de trabalho antes das reivindicações em Chicago?", opcoes: ["6 horas", "8 horas", "12 horas", "10 horas"], correta: 2 },
+      { pergunta: "O Dia do Trabalho começou a ser comemorado, de forma não oficial, pelos trabalhadores no Brasil na década de:", opcoes: ["1890", "1900", "1910", "1920"], correta: 2 },
+      { pergunta: "Em que ano a jornada de 8 horas começou a ser oficialmente adotada em países como a França?", opcoes: ["1886", "1919", "1924", "1945"], correta: 1 },
+      { pergunta: "Qual destes é um objetivo atual do Dia do Trabalho?", opcoes: ["Celebrar conquistas de empresas", "Reduzir a carga tributária", "Reforçar a valorização do trabalhador", "Incentivar o comércio internacional"], correta: 2 },
+      { pergunta: "Qual das práticas abaixo pode ser considerada uma forma de trabalho escravo contemporâneo?", opcoes: ["Pagamento de salário abaixo do mínimo legal", "Jornada de trabalho de 8 horas sem registro em carteira", "Trabalho temporário sem contrato assinado", "Atraso eventual no pagamento de salário"], correta: 0 }
     ];
 
     function verificarRA() {
@@ -198,5 +215,6 @@
       }
     }
   </script>
+
 </body>
 </html>
