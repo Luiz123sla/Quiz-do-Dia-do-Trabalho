@@ -1,41 +1,53 @@
-# Quiz-do-Dia-do-Trabalho<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Quiz - Dia do Trabalhador</title>
+
+  <!-- Fonte Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      font-family: 'Poppins', sans-serif;
+      background-image: url('https://raw.githubusercontent.com/Luiz123sla/Quiz-sobre-o-Dia-do-Trabalho/main/A_flat_digital_illustration_celebrating_Feliz_Dia_.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
     }
     .container {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.95);
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.25);
       max-width: 600px;
       width: 90%;
       text-align: center;
     }
     input[type="text"] {
-      padding: 10px;
+      padding: 12px;
       width: 80%;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 16px;
       margin-bottom: 20px;
     }
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       background-color: #007BFF;
       border: none;
       color: white;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      transition: background 0.3s ease;
     }
     button:hover {
       background-color: #0056b3;
@@ -45,16 +57,33 @@
     }
     .question {
       text-align: left;
-      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
     }
     .option {
       margin: 10px 0;
       text-align: left;
+      font-size: 16px;
     }
     #timer {
       font-weight: bold;
-      margin-top: 10px;
+      margin-top: 15px;
       color: red;
+      font-size: 16px;
+    }
+    #raInput {
+      text-align: center;
+    }
+    #feedback {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
   </style>
 </head>
@@ -62,14 +91,16 @@
   <div class="container">
     <div id="ra-section">
       <h2>Quiz do Dia do Trabalhador</h2>
-      <p>Digite seu RA para responder:</p>
-      <input type="text" id="raInput" placeholder="Ex: 123456">
+      <p>Informe seu número de RA:</p>
+      <input type="text" id="raInput" placeholder="Digite seu RA">
+      <br>
       <button onclick="verificarRA()">Começar</button>
     </div>
 
     <div id="quiz-section" class="hidden">
       <div id="question-container"></div>
       <p id="timer"></p>
+      <p id="feedback"></p>
     </div>
   </div>
 
@@ -154,31 +185,27 @@
 
     function verificarRA() {
       const ra = document.getElementById("raInput").value.trim();
-      if (!ra) {
-        alert("Por favor, digite seu RA.");
+      const apenasNumeros = /^\\d{6,}$/;
+      if (!apenasNumeros.test(ra)) {
+        alert("Por favor, digite seu RA corretamente.");
         return;
       }
-
       if (localStorage.getItem("quiz_ra_" + ra)) {
         alert("Você já respondeu o quiz.");
         return;
       }
-
       iniciarQuiz(ra);
     }
 
     function iniciarQuiz(ra) {
       document.getElementById("ra-section").classList.add("hidden");
       document.getElementById("quiz-section").classList.remove("hidden");
-
       const pergunta = perguntas[Math.floor(Math.random() * perguntas.length)];
       const container = document.getElementById("question-container");
-      let html = `<div class='question'><strong>${pergunta.pergunta}</strong></div>`;
-
+      let html = `<div class='question'>${pergunta.pergunta}</div>`;
       pergunta.opcoes.forEach((opcao, index) => {
         html += `<div class='option'><label><input type='radio' name='resposta' value='${index}'> ${opcao}</label></div>`;
       });
-
       html += `<button onclick='enviarResposta(${pergunta.correta}, "${ra}")'>Responder</button>`;
       container.innerHTML = html;
       iniciarTimer();
@@ -190,7 +217,6 @@
     function iniciarTimer() {
       const timer = document.getElementById("timer");
       timer.innerText = `Tempo restante: ${tempo}s`;
-
       cronometro = setInterval(() => {
         tempo--;
         timer.innerText = `Tempo restante: ${tempo}s`;
@@ -209,10 +235,14 @@
         alert("Você precisa selecionar uma resposta antes de enviar.");
         return;
       }
-
       const valor = parseInt(selecionada.value);
-      const msg = valor === correta ? "✅ Resposta correta!" : "❌ Resposta incorreta.";
-      document.getElementById("question-container").innerHTML += `<p><strong>${msg}</strong></p>`;
+      let msg = valor === correta
+        ? "Parabéns! Você acertou a pergunta. Retire seu brinde."
+        : "Resposta incorreta. Obrigado por participar!";
+
+      document.getElementById("question-container").innerHTML = "";
+      document.getElementById("timer").innerText = "";
+      document.getElementById("feedback").innerText = msg;
       localStorage.setItem("quiz_ra_" + ra, true);
     }
   </script>
