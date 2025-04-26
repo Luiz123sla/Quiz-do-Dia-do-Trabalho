@@ -185,7 +185,7 @@
 
     function verificarRA() {
       const ra = document.getElementById("raInput").value.trim();
-      const apenasNumeros = /^\\d{6,}$/;
+      const apenasNumeros = /^\d{6,}$/;
       if (!apenasNumeros.test(ra)) {
         alert("Por favor, digite seu RA corretamente.");
         return;
