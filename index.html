@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz - Dia do Trabalhador</title>
 
   <!-- Fonte Poppins -->
@@ -10,183 +11,126 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-image: url('https://raw.githubusercontent.com/Luiz123sla/Quiz-sobre-o-Dia-do-Trabalho/main/A_flat_digital_illustration_celebrating_Feliz_Dia_.png');
+      background-image: url('https://github.com/Luiz123sla/Quiz-do-Dia-do-Trabalho/raw/main/f002be3b-b811-4e99-9aed-90bfa6161f7b.png');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       background-attachment: fixed;
       margin: 0;
-      height: 100vh;
+      padding: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f4;
     }
+
+    h1 {
+      margin-top: 20px;
+      color: #003366;
+      text-align: center;
+    }
+
     .container {
       background: rgba(255, 255, 255, 0.95);
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.25);
-      max-width: 600px;
+      margin-top: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
       width: 90%;
+      max-width: 500px;
       text-align: center;
     }
+
     input[type="text"] {
-      padding: 12px;
       width: 80%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
+      padding: 10px;
       margin-bottom: 20px;
-    }
-    button {
-      padding: 12px 24px;
-      background-color: #007BFF;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
+      border: 1px solid #ccc;
+      border-radius: 5px;
       font-size: 16px;
-      transition: background 0.3s ease;
     }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
     button:hover {
       background-color: #0056b3;
     }
+
     .hidden {
       display: none;
     }
+
     .question {
-      text-align: left;
-      font-size: 18px;
+      margin: 20px 0;
       font-weight: 600;
-      margin-bottom: 20px;
+      text-align: left;
     }
+
     .option {
       margin: 10px 0;
       text-align: left;
-      font-size: 16px;
     }
+
     #timer {
       font-weight: bold;
-      margin-top: 15px;
+      margin-top: 20px;
       color: red;
-      font-size: 16px;
+      font-size: 18px;
     }
-    #raInput {
-      text-align: center;
-    }
-    #feedback {
-      font-size: 20px;
+
+    .message {
+      font-size: 22px;
       font-weight: bold;
-      color: #333;
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #f0f0f0;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
     }
   </style>
+
 </head>
 <body>
-  <div class="container">
-    <div id="ra-section">
-      <h2>Quiz do Dia do Trabalhador</h2>
-      <p>Informe seu número de RA:</p>
-      <input type="text" id="raInput" placeholder="Digite seu RA">
-      <br>
-      <button onclick="verificarRA()">Começar</button>
-    </div>
+  <h1>Quiz-do-Dia-do-Trabalho</h1>
 
-    <div id="quiz-section" class="hidden">
-      <div id="question-container"></div>
-      <p id="timer"></p>
-      <p id="feedback"></p>
-    </div>
+  <div class="container" id="ra-section">
+    <h2>Quiz do Dia do Trabalhador</h2>
+    <p>Informe seu número de RA:</p>
+    <input type="text" id="raInput" maxlength="10">
+    <br>
+    <button onclick="verificarRA()">Começar</button>
+  </div>
+
+  <div class="container hidden" id="quiz-section">
+    <div id="question-container"></div>
+    <p id="timer"></p>
   </div>
 
   <script>
     const perguntas = [
-      {
-        pergunta: "Em que data é comemorado o Dia do Trabalhador no Brasil?",
-        opcoes: ["7 de setembro", "1º de maio", "15 de novembro", "4 de outubro"],
-        correta: 1
-      },
-      {
-        pergunta: "Qual foi a principal reivindicação da greve de Chicago em 1886?",
-        opcoes: ["Fim do trabalho aos domingos", "Aumento do salário mínimo", "Redução da jornada para 8 horas", "Criação de férias remuneradas"],
-        correta: 2
-      },
-      {
-        pergunta: "Em que país aconteceu a greve que deu origem ao Dia do Trabalhador?",
-        opcoes: ["França", "Estados Unidos", "Inglaterra", "Brasil"],
-        correta: 1
-      },
-      {
-        pergunta: "Qual cidade foi o palco central da greve de 1886?",
-        opcoes: ["Nova York", "Chicago", "Boston", "Washington"],
-        correta: 1
-      },
-      {
-        pergunta: "Em que ano o Brasil transformou o 1º de maio em feriado oficialmente por decreto?",
-        opcoes: ["1924", "1930", "1988", "2002"],
-        correta: 0
-      },
-      {
-        pergunta: "Qual presidente brasileiro oficializou o feriado do Dia do Trabalhador?",
-        opcoes: ["Getúlio Vargas", "Artur Bernardes", "Juscelino Kubitschek", "João Goulart"],
-        correta: 1
-      },
-      {
-        pergunta: "Qual desses direitos NÃO fazia parte das reivindicações iniciais do movimento operário?",
-        opcoes: ["Jornada de 8 horas", "Condições dignas de trabalho", "Direito à aposentadoria", "Valorização dos salários"],
-        correta: 2
-      },
-      {
-        pergunta: "Em que ano o 1º de maio foi oficialmente incluído como feriado nacional por lei no Brasil?",
-        opcoes: ["1988", "1943", "2002", "1977"],
-        correta: 2
-      },
-      {
-        pergunta: "Qual é o principal motivo da comemoração do Dia do Trabalhador em 1º de maio?",
-        opcoes: ["É o dia em que foi assinada a Lei Áurea", "Marca o início da Revolução Industrial", "Homenageia uma greve histórica por melhores condições de trabalho", "Comemora a fundação da ONU"],
-        correta: 2
-      },
-      {
-        pergunta: "Qual país reduziu pela primeira vez a jornada de trabalho para 8 horas após a greve de 1886?",
-        opcoes: ["Brasil", "Estados Unidos", "França", "Inglaterra"],
-        correta: 2
-      },
-      {
-        pergunta: "Qual era a jornada comum de trabalho antes das reivindicações em Chicago?",
-        opcoes: ["6 horas", "8 horas", "12 horas", "10 horas"],
-        correta: 2
-      },
-      {
-        pergunta: "O Dia do Trabalho começou a ser comemorado, de forma não oficial, pelos trabalhadores no Brasil na década de:",
-        opcoes: ["1890", "1900", "1910", "1920"],
-        correta: 2
-      },
-      {
-        pergunta: "Em que ano a jornada de 8 horas começou a ser oficialmente adotada em países como a França?",
-        opcoes: ["1886", "1919", "1924", "1945"],
-        correta: 1
-      },
-      {
-        pergunta: "Qual destes é um objetivo atual do Dia do Trabalho?",
-        opcoes: ["Celebrar conquistas de empresas", "Reduzir a carga tributária", "Reforçar a valorização do trabalhador", "Incentivar o comércio internacional"],
-        correta: 2
-      },
-      {
-        pergunta: "Qual das práticas abaixo pode ser considerada uma forma de trabalho escravo contemporâneo?",
-        opcoes: ["Pagamento de salário abaixo do mínimo legal", "Jornada de trabalho de 8 horas sem registro em carteira", "Trabalho temporário sem contrato assinado", "Atraso eventual no pagamento de salário"],
-        correta: 0
-      }
+      { pergunta: "Em que país aconteceu a greve que deu origem ao Dia do Trabalhador?", opcoes: ["França", "Estados Unidos", "Inglaterra", "Brasil"], correta: 1 },
+      { pergunta: "Qual cidade foi o palco central da greve de 1886?", opcoes: ["Nova York", "Chicago", "Boston", "Washington"], correta: 1 },
+      { pergunta: "Em que ano o Brasil transformou o 1º de maio em feriado oficialmente por decreto?", opcoes: ["1924", "1930", "1988", "2002"], correta: 0 },
+      { pergunta: "Qual presidente brasileiro oficializou o feriado do Dia do Trabalhador?", opcoes: ["Getúlio Vargas", "Artur Bernardes", "Juscelino Kubitschek", "João Goulart"], correta: 1 },
+      { pergunta: "Qual desses direitos NÃO fazia parte das reivindicações iniciais do movimento operário?", opcoes: ["Jornada de 8 horas", "Condições dignas de trabalho", "Direito à aposentadoria", "Valorização dos salários"], correta: 2 },
+      { pergunta: "Em que ano o 1º de maio foi oficialmente incluído como feriado nacional por lei no Brasil?", opcoes: ["1988", "1943", "2002", "1977"], correta: 2 },
+      { pergunta: "Qual é o principal motivo da comemoração do Dia do Trabalhador em 1º de maio?", opcoes: ["É o dia em que foi assinada a Lei Áurea", "Marca o início da Revolução Industrial", "Homenageia uma greve histórica por melhores condições de trabalho", "Comemora a fundação da ONU"], correta: 2 },
+      { pergunta: "Qual país reduziu pela primeira vez a jornada de trabalho para 8 horas após a greve de 1886?", opcoes: ["Brasil", "Estados Unidos", "França", "Inglaterra"], correta: 2 },
+      { pergunta: "Qual era a jornada comum de trabalho antes das reivindicações em Chicago?", opcoes: ["6 horas", "8 horas", "12 horas", "10 horas"], correta: 2 },
+      { pergunta: "O Dia do Trabalho começou a ser comemorado, de forma não oficial, pelos trabalhadores no Brasil na década de:", opcoes: ["1890", "1900", "1910", "1920"], correta: 2 }
     ];
+
+    let tempo = 30;
+    let cronometro;
 
     function verificarRA() {
       const ra = document.getElementById("raInput").value.trim();
-      const apenasNumeros = /^\d{6,}$/;
-      if (!apenasNumeros.test(ra)) {
+      if (!/^\d{6,}$/.test(ra)) {
         alert("Por favor, digite seu RA corretamente.");
         return;
       }
@@ -200,51 +144,62 @@
     function iniciarQuiz(ra) {
       document.getElementById("ra-section").classList.add("hidden");
       document.getElementById("quiz-section").classList.remove("hidden");
+
       const pergunta = perguntas[Math.floor(Math.random() * perguntas.length)];
       const container = document.getElementById("question-container");
-      let html = `<div class='question'>${pergunta.pergunta}</div>`;
+
+      let html = `<div class="question">${pergunta.pergunta}</div>`;
       pergunta.opcoes.forEach((opcao, index) => {
-        html += `<div class='option'><label><input type='radio' name='resposta' value='${index}'> ${opcao}</label></div>`;
+        html += `
+          <div class="option">
+            <input type="radio" name="resposta" value="${index}">
+            ${opcao}
+          </div>
+        `;
       });
-      html += `<button onclick='enviarResposta(${pergunta.correta}, "${ra}")'>Responder</button>`;
+      html += `<button onclick="enviarResposta(${pergunta.correta}, '${ra}')">Responder</button>`;
+
       container.innerHTML = html;
       iniciarTimer();
     }
 
-    let tempo = 30;
-    let cronometro;
-
     function iniciarTimer() {
       const timer = document.getElementById("timer");
       timer.innerText = `Tempo restante: ${tempo}s`;
+
       cronometro = setInterval(() => {
         tempo--;
         timer.innerText = `Tempo restante: ${tempo}s`;
         if (tempo <= 0) {
           clearInterval(cronometro);
           timer.innerText = "Tempo esgotado!";
-          document.querySelectorAll('input[name="resposta"]').forEach(input => input.disabled = true);
+          bloquearRespostas();
         }
       }, 1000);
+    }
+
+    function bloquearRespostas() {
+      document.querySelectorAll('input[name="resposta"]').forEach(input => input.disabled = true);
     }
 
     function enviarResposta(correta, ra) {
       clearInterval(cronometro);
       const selecionada = document.querySelector('input[name="resposta"]:checked');
       if (!selecionada) {
-        alert("Você precisa selecionar uma resposta antes de enviar.");
+        alert("Selecione uma resposta antes de enviar.");
         return;
       }
       const valor = parseInt(selecionada.value);
-      let msg = valor === correta
-        ? "Parabéns! Você acertou a pergunta. Retire seu brinde."
-        : "Resposta incorreta. Obrigado por participar!";
+      const container = document.getElementById("question-container");
+      const resultado = valor === correta
+        ? "<div class='message' style='color: green;'>✅ Resposta correta! Retire seu brinde!</div>"
+        : "<div class='message' style='color: red;'>❌ Resposta incorreta.</div>";
 
-      document.getElementById("question-container").innerHTML = "";
-      document.getElementById("timer").innerText = "";
-      document.getElementById("feedback").innerText = msg;
+      container.innerHTML = resultado;
+      document.getElementById("timer").style.display = "none";
       localStorage.setItem("quiz_ra_" + ra, true);
     }
   </script>
+
 </body>
 </html>
